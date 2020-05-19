@@ -22,7 +22,7 @@ class Game{
     private:
         //variables
         //window
-        sf::RenderWindow* window(sf::VideoMode(800, 600), "My game", sf::Style::Titlebar | sf::Style::Close);
+        sf::RenderWindow* window;
         //private functions
         void initVariables();
         void initWindow();
