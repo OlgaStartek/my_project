@@ -1,31 +1,42 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 
-/* 'opakowanie gry' 'game engine'
-*/
-class Game{
-    public:
-        //constructors / destructors
-        Game();
-        virtual ~Game();
+class Game {
+private:
 
-        //Functions
-        void update();
-        void render();
+	sf::RenderWindow* window;
+	sf::VideoMode videoMode;
+	sf::Event event;
 
-    private:
-        //variables
-        //window
-        sf::RenderWindow* window;
-        //private functions
-        void initVariables();
-        void initWindow();
+	//Game objects
+	sf::RectangleShape key;
+
+	//Private functions
+	void initVariables();
+	void initWindow();
+	void initKeys();
+public:
+	//Constructors/destructrs
+	Game();
+	virtual ~Game();
+
+	//Accessors
+	const bool running() const;
+	
+	//Functions
+	void pollEvents();
+	void update();
+	void render();
+
+
+
 };
 
-#endif // GAME_H
+#endif
