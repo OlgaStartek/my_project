@@ -12,12 +12,37 @@ void Game::initVariables(){
 }
 
 void Game::initWindow(){
-	this->videoMode.height = 600;
-	this->videoMode.width = 800;
+	this->videoMode.height = 500;
+	this->videoMode.width = 700;
 	this->window = new sf::RenderWindow(this->videoMode, "My game", sf::Style::Titlebar | sf::Style::Close);
 	
     this->window->setFramerateLimit(60);
 }
+
+void Game::initBackground(){
+    if (!this->backgroundTex.loadFromFile("Textures/keyss.jpg")){
+        std::cout << "ERROR: Failed to load background" << "\n";
+    }
+
+    this->background.setTexture(this->backgroundTex);
+}
+
+void Game::initText(){
+    if (this->font.loadFromFile("Fonts/Dosis-Light.ttf") == false)
+        std::cout << "ERROR: Failed to load fonts" << "\n";
+
+    this->gameText.setFont(this->font);
+    this->gameText.setCharacterSize(30);
+    this->gameText.setFillColor(sf::Color::Red);
+    this->gameText.setString("none");
+
+    this->endGameText.setFont(this->font);
+    this->endGameText.setCharacterSize(60);
+    this->endGameText.setFillColor(sf::Color::Red);
+    this->endGameText.setPosition(sf::Vector2f(20, 100));
+    this->endGameText.setString("GAME OVER");
+}
+
 
 void Game::initKeys(){
     this->key.setPosition(10.f, 10.f);
@@ -28,12 +53,13 @@ void Game::initKeys(){
 Game::Game() {
 	this->initVariables();
 	this->initWindow();
+    this->initBackground();
+    this->initText();
     this->initKeys();
 }
 
 Game::~Game() {
 	delete this->window;
-
 }
 //Accessors
 const bool Game::running() const{
@@ -79,6 +105,13 @@ void Game::updateMousePositions(){
     this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow); //mapping window position to float
 }
 
+void Game::updateText(){
+    std::stringstream string;
+    string << "Points: " << this->points << "\n" << "Lives left: " << this->lives << "\n";
+
+    this->gameText.setString(string.str());//convert to string
+}
+
 void Game::updateKeys(){
     /* update spawn timer
     spawn keys
@@ -99,21 +132,21 @@ void Game::updateKeys(){
     //move and delete 
     for (int i = 0; i < this->keys.size(); i++) {
         bool deleted = false; //ustawiamy flage dla opcji usuwania zeby nie usuwac w kazdym miejscu osobno
-        this->keys[i].move(0.f, 2.f); //przesuwamy w dol
+        this->keys[i].move(0.f, 4.f); //przesuwamy w dol
 
         //check if clicked
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             if (this->keys[i].getGlobalBounds().contains(this->mousePosView)) { //sprawdzamy czy klikniecie jest wewnatrz 
-                deleted = true;
                 this->points += 5;
                 std::cout << "Points: " << this->points << "\n";
+                deleted = true;
             }
         }
         //jesli przekroczymy koniec ekranu 
         if (this->keys[i].getPosition().y > this->window->getSize().y) { //sprawdzamy czy y przekracza window size
-            deleted = true;
             this->lives -= 1;
             std::cout << "Lives left: " << this->lives << "\n";
+            deleted = true;
         }
         
         //usuwanie
@@ -122,18 +155,28 @@ void Game::updateKeys(){
     }
 }
 
-void Game::update(){
+void Game::update() {
 
     this->pollEvents(); //to zostawiamy poza petla zeby moc wylaczyc ekran 
     if (this->endGame == false) {
         this->updateMousePositions();
 
+        this->updateText();
         this->updateKeys();
     }
 
     //End game condition 
-    if (this->lives <= 0)
+    if (this->lives <= 0) {
         this->endGame = true;
+    }
+}
+
+void Game::renderText(){
+    this->window->draw(this->gameText);
+}
+
+void Game::renderBackground(){
+    this->window->draw(this->background);
 }
 
 void Game::renderKeys(){
@@ -152,7 +195,12 @@ void Game::render(){
 
     this->window->clear(sf::Color::Cyan);
 
+    this->renderBackground();
     this->renderKeys();
+
+    this->renderText();
+    if (this->endGame == true)
+        this->window->draw(this->endGameText);
 
     this->window->display();
 }
