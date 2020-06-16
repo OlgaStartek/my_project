@@ -3,10 +3,12 @@
 void Game::initVariables(){
 	this->window = nullptr;
 
+    this->endGame = false; 
     this->points = 0;
-    this->spawnTimerMax = 1000.f;
+    this->lives = 10;
+    this->spawnTimerMax = 10.f;
     this->spawnTimer = this->spawnTimerMax;
-    this->maxKeys = 5;
+    this->maxKeys = 6;
 }
 
 void Game::initWindow(){
@@ -19,7 +21,7 @@ void Game::initWindow(){
 
 void Game::initKeys(){
     this->key.setPosition(10.f, 10.f);
-    this->key.setSize(sf::Vector2f(100.f, 100.f)); //dwa floaty
+    this->key.setSize(sf::Vector2f(80.f, 100.f)); //dwa floaty
     this->key.setFillColor(sf::Color::Black);
 }
 
@@ -34,9 +36,12 @@ Game::~Game() {
 
 }
 //Accessors
-const bool Game::running() const
-{
+const bool Game::running() const{
 	return this->window->isOpen();
+}
+
+const bool Game::getEnd() const{
+    return this->endGame;
 }
 
 //Functions
@@ -71,6 +76,7 @@ void Game::pollEvents(){
 void Game::updateMousePositions(){
     //pozycja myszy wzgledem okna gryv
     this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+    this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow); //mapping window position to float
 }
 
 void Game::updateKeys(){
@@ -90,19 +96,44 @@ void Game::updateKeys(){
             this->spawnTimer += 1.f;
     }
 
-    //move
-    for (auto &k : this->keys) {
-        k.move(0.f, 2.f); //przesuwamy w dol
+    //move and delete 
+    for (int i = 0; i < this->keys.size(); i++) {
+        bool deleted = false; //ustawiamy flage dla opcji usuwania zeby nie usuwac w kazdym miejscu osobno
+        this->keys[i].move(0.f, 2.f); //przesuwamy w dol
+
+        //check if clicked
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (this->keys[i].getGlobalBounds().contains(this->mousePosView)) { //sprawdzamy czy klikniecie jest wewnatrz 
+                deleted = true;
+                this->points += 5;
+                std::cout << "Points: " << this->points << "\n";
+            }
+        }
+        //jesli przekroczymy koniec ekranu 
+        if (this->keys[i].getPosition().y > this->window->getSize().y) { //sprawdzamy czy y przekracza window size
+            deleted = true;
+            this->lives -= 1;
+            std::cout << "Lives left: " << this->lives << "\n";
+        }
+        
+        //usuwanie
+        if(deleted)
+            this->keys.erase(this->keys.begin() + i); 
     }
 }
 
 void Game::update(){
 
-    this->pollEvents();
+    this->pollEvents(); //to zostawiamy poza petla zeby moc wylaczyc ekran 
+    if (this->endGame == false) {
+        this->updateMousePositions();
 
-    this->updateMousePositions();
+        this->updateKeys();
+    }
 
-    this->updateKeys();
+    //End game condition 
+    if (this->lives <= 0)
+        this->endGame = true;
 }
 
 void Game::renderKeys(){
