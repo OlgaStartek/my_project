@@ -193,7 +193,7 @@ void Game::render(){
     -display
     */
 
-    this->window->clear(sf::Color::Cyan);
+    this->window->clear();
 
     this->renderBackground();
     this->renderKeys();
