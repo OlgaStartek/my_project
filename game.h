@@ -20,8 +20,12 @@ private:
 
 	//Mouse position
 	sf::Vector2i mousePosWindow;
+	sf::Vector2f mousePosView;//view mouse position in float
 
-	int points;
+	//some variables
+	bool endGame;
+	unsigned points; //only positives
+	int lives;
 	float spawnTimer;
 	float spawnTimerMax;
 	int maxKeys; //max na ekranie w tym samym czasie 
@@ -41,6 +45,7 @@ public:
 
 	//Accessors
 	const bool running() const;
+	const bool getEnd() const;
 	
 	//Functions
 	void spawn();
