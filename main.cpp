@@ -5,7 +5,7 @@ int main() {
     std::srand(static_cast<unsigned>(time(NULL)));
     Game game;
     //Game loop
-    while (game.running() && !game.getEnd()) {
+    while (game.running()) {
 
         //Update
         game.update();
