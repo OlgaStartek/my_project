@@ -32,7 +32,7 @@ void Game::initText(){
         std::cout << "ERROR: Failed to load fonts" << "\n";
 
     this->gameText.setFont(this->font);
-    this->gameText.setCharacterSize(30);
+    this->gameText.setCharacterSize(32);
     this->gameText.setFillColor(sf::Color::Red);
     this->gameText.setString("none");
 
@@ -48,6 +48,8 @@ void Game::initKeys(){
     this->key.setPosition(10.f, 10.f);
     this->key.setSize(sf::Vector2f(80.f, 100.f)); //dwa floaty
     this->key.setFillColor(sf::Color::Black);
+    this->key.setOutlineColor(sf::Color::Cyan);
+    this->key.setOutlineThickness(5.f);
 }
 
 Game::Game() {
@@ -181,7 +183,7 @@ void Game::renderBackground(){
 
 void Game::renderKeys(){
     //rendering
-    for (auto &k : this->keys) {
+    for (auto &k : this->keys) { //wykonujemy na kazdym kolejnym elemencie
         this->window->draw(k);
     }
 }
