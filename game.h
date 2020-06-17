@@ -9,8 +9,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-
 
 class Game {
 private:
@@ -52,6 +50,7 @@ private:
 public:
 	//Constructors/destructrs
 	Game();
+	Game(const Game& g);
 	virtual ~Game();
 
 	//Accessors
