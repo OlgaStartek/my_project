@@ -1,9 +1,9 @@
 SHELL = /bin/sh
-#to nam okreœla pow³okê 
+#to nam okreÅ›la powÅ‚okÄ™ 
 .SUFFIXES:
-# ta linijka zeruje listê sufiksów któr¹ mo¿e obs³ugiwaæ
+# ta linijka zeruje listÄ™ sufiksÃ³w ktÃ³rÄ… moÅ¼e obsÅ‚ugiwaÄ‡
 .SUFFIXES: .cpp .h .o
-#tu wpisujemy wszystkie sufiksy których bêdziemy u¿ywaæ w programach
+#tu wpisujemy wszystkie sufiksy ktÃ³rych bÄ™dziemy uÅ¼ywaÄ‡ w programach
 
 FLAGS = -Wall -O3 -std=c++11
 SFML = -lsfml-graphics -lsfml-window -lsfml-system
@@ -11,8 +11,8 @@ SFML = -lsfml-graphics -lsfml-window -lsfml-system
 game.o: game.cpp game.h
 	g++ -c game.cpp $(FLAGS)
 
-main.o: SFMLGame.cpp game.h
-	g++ -c SFMLGame.cpp $(FLAGS)
+main.o: main.cpp game.h
+	g++ -c main.cpp $(FLAGS)
 # to nam stworzy object files o nazwie main.o
 
 main: main.o game.o
