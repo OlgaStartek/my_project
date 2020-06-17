@@ -5,18 +5,55 @@ SHELL = /bin/sh
 .SUFFIXES: .cpp .h .o
 #tu wpisujemy wszystkie sufiksy których będziemy używać w programach
 
-FLAGS = -Wall -O3 -std=c++11
-SFML = -lsfml-graphics -lsfml-window -lsfml-system
+CFLAGS  = -O3 -Wall -c -fPIC -Wall -pedantic -fPIC 
+LFLAGS = -s -Wall  -pedantic -fPIC 
+LDLIBS = 
 
-game.o: game.cpp game.h
-	g++ -c game.cpp $(FLAGS)
+DIR = `basename $(CURDIR)`
 
-main.o: main.cpp game.h
-	g++ -c main.cpp $(FLAGS)
-# to nam stworzy object files o nazwie main.o
+FILE1 = game
+EXEC1D2  = $(FILE1)D2.x
+OBJS1 = $(FILE1).o
 
-main: main.o game.o
-	g++ main.o -o $(SFML)
+FILE2 = main
+EXEC2D2  = $(FILE2)D2.x
+OBJS2 = $(FILE2).o
+
+LIBS_DIR = ./
+
+SFML_LIBS = -lsfml-graphics-2 -lsfml-window-2 -lsfml-system-2
+
+CO = g++
+LD = $(CO)
+
+%.o: %.c %.h
+	$(CO) $(CFLAGS) -c $<
+%.o: %.c
+	$(CO) $(CFLAGS) -c $<
+
+
+.PHONY: all
+all: $(EXEC1S) $(EXEC2S) 
+
+
+.PHONY: runD2
+
+$(EXEC1D2): $(OBJS1) 
+	$(LD) -o $@ $(LFLAGS) $(OBJS1) -L$(LIBS_DIR) $(LDLIBS) $(SFML_LIBS) 
+
+$(EXEC2D2): $(OBJS2)
+	$(LD) -o $@ $(LFLAGS) $(OBJS2) -L$(LIBS_DIR) $(LDLIBS) $(SFML_LIBS) 
+
+
+runD2: $(EXEC1D2) $(EXEC2D2)
+	( export LD_LIBRARY_PATH=${LIBS_DIR}:${LD_LIBRARY_PATH}; \
+	./$(EXEC1D2))
+
+.PHONY: clean tar
+
 
 clean:
-	rm *.o main
+	rm -f *.x *.o;rm -rf ${LIBS_DIR}
+
+tar: clean
+	(cd ../; tar -cvzf $(DIR).tar.gz  $(DIR) )
