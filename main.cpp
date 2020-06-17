@@ -12,11 +12,8 @@ int main() {
 
         //Render
         game.render();
-       
-        
-
+      
         //END
-       
     }
     return 0;
 }
