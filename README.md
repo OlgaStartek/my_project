@@ -7,7 +7,7 @@ Po stracie 10 żyć następuje koniec gry.
 
 Sposób uruchomienia:
 1. git clone https://github.com/OlgaStartek/my_project
-2. make main
+w visual studio 
 
 Wymagania: aby program poprawnie działał wymagana jest zainstalowana biblioteka SFML
 
@@ -15,27 +15,18 @@ Zagadnienia:
 1. Projekt obiektowy: 
 - klasy:
 	game.h : 15
-- konstruktory, destruktory 
-	game.h :  54, 55,
-- konstruktor kopiujący 
-- deklaracja przyjaciela 
-- dziedziczenie 
-- polimorfizm 
-- klasa abstrakcyjna 
-- czysto wirtualne metody 
+- konstruktory, destruktory:
+	game.h : 52, 54
+- konstruktor kopiujący:
+	game.h : 53
  
 2. STL 
 - szablony:
 	game.h : 43
-- iteratory 
-- algorytmy 
  
 3. C++ 
 - zakresowa pętla for:
 	game.cpp : 186
-- własny szablon klasy (lub funkcji) 
-- przeciążanie operatorów 
-- wyjątki 
 - plik .h z deklaracja i .cpp z definicją metod:
 	game.cpp i game.h
 - linker
