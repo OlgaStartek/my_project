@@ -10,8 +10,8 @@ folder z czcionką i folder z grafiką
 Wymagania: aby program poprawnie działał wymagana jest zainstalowana biblioteka SFML
 
 Sposób uruchomienia:
-1. git clone https://github.com/OlgaStartek/my_project
-utworzyć projekt w visual studio,
+git clone https://github.com/OlgaStartek/my_project
+utworzyć projekt w visual studio
 w miejscu Projekt->Wlasciwosci->C/C++->Ogólne->Dodatkowe katalogi  wpisać  <sfml-install-path>/include 
 Konsolidator->Ogólne->Dodatkowe katalogi wpisać <sfml-install-path>/lib
 Konsolidator->Dane wejściowe (dla Release) dołączyć sfml-graphics-s.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-audio-s.lib
